@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FP Tracker</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="loginView" class="login-shell">
+    <section class="login-brand">
+      <div class="login-logo">FP</div>
+      <h1>FP Tracker</h1>
+      <p>Financial Productivity Tracker</p>
+      <div class="flow-pills">
+        <span>Borrador</span><span>S0 · OT</span><span>S3 · Finanzas</span><span>S4 · Captura</span><span>S5 · Cierre</span>
+      </div>
+    </section>
+    <section class="login-panel">
+      <form id="loginForm" class="login-card">
+        <h2>Iniciar sesión</h2>
+        <p>Ingresa con tu correo corporativo y contraseña.</p>
+        <label>Correo electrónico<input id="loginEmail" type="email" autocomplete="username" required /></label>
+        <label>Contraseña<input id="loginPassword" type="password" autocomplete="current-password" required /></label>
+        <button class="btn primary full" type="submit">Ingresar</button>
+        <div id="loginMessage" class="message"></div>
+      </form>
+    </section>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo">FP</div><div><strong>FP Tracker</strong><small>Financial Productivity Tracker</small></div></div>
+      <div class="nav-group" data-section="gestion"><span>GESTIÓN</span>
+        <button class="nav active" data-page="dashboard" data-roles="Administrador|Key User|OT|Finanzas|Responsable|Backup">▦ Dashboard</button>
+        <button class="nav" data-page="initiatives" data-roles="Administrador|Key User|OT|Finanzas|Responsable|Backup">▥ Iniciativas</button>
+        <button class="nav" data-page="planning" data-roles="Administrador|Key User|Finanzas">▤ Planificación Financiera</button>
+        <button class="nav" data-page="captures" data-roles="Administrador|Key User|Finanzas|Responsable|Backup">◩ Captura Mensual</button>
+        <button class="nav" data-page="tasks" data-roles="Administrador|Key User|OT|Finanzas|Responsable|Backup">✓ Pendientes</button>
+      </div>
+      <div class="nav-group" data-section="ejecucion"><span>EJECUCIÓN</span>
+        <button class="nav" data-page="kpis" data-roles="Administrador|Key User|OT|Finanzas|Responsable|Backup">◎ KPI</button>
+        <button class="nav" data-page="milestones" data-roles="Administrador|Key User|OT|Finanzas|Responsable|Backup">◇ Hitos</button>
+        <button class="nav" data-page="approvals" data-roles="Administrador|Key User|OT|Finanzas">✓ Aprobaciones</button>
+        <button class="nav" data-page="reports" data-roles="Administrador|Key User|OT|Finanzas">▥ Reportes</button>
+      </div>
+      <div class="nav-group" data-section="admin"><span>ADMINISTRACIÓN</span>
+        <button class="nav" data-page="users" data-roles="Administrador|Key User">♙ Usuarios</button>
+        <button class="nav" data-page="catalogs" data-roles="Administrador|Key User">⚙ Catálogos</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><h2 id="pageTitle">Dashboard</h2><small>Productividad financiera y captura de valor</small></div>
+        <div class="userbox"><div id="userInitials" class="avatar">FP</div><div><strong id="userName">Usuario</strong><small id="userRole">Rol</small></div><button id="logoutBtn" class="btn secondary">Salir</button></div>
+      </header>
+
+      <div class="content">
+        <section id="page-dashboard" class="page active">
+          <div class="kpi-grid">
+            <article class="card kpi"><small>Iniciativas activas</small><strong id="kpiActive">0</strong></article>
+            <article class="card kpi"><small>Pendientes aprobación</small><strong id="kpiApprovals">0</strong></article>
+            <article class="card kpi"><small>EBITDA real validado</small><strong id="kpiEbitda">$0</strong></article>
+            <article class="card kpi"><small>Mis pendientes</small><strong id="kpiTasks">0</strong></article>
+          </div>
+          <div class="section-title"><h3>Flujo de negocio</h3></div>
+          <div class="card stages"><span>BORRADOR</span><span>S0 · OT</span><span>S3 · FINANZAS</span><span class="current">S4 · CAPTURA</span><span>S5 · CIERRE</span><span>CERRADA</span></div>
+          <div class="two-col"><article class="card"><h3>Actividad reciente</h3><div id="recentActivity" class="activity-list"></div></article><article class="card"><h3>Control</h3><div class="notice">Las capturas validadas quedan bloqueadas para Responsable y Backup.</div><div class="notice warning">Un rechazo crea un pendiente para devolver el registro al flujo de corrección.</div></article></div>
+        </section>
+
+        <section id="page-initiatives" class="page">
+          <div class="section-title"><div><h3>Iniciativas</h3><small>ID FP secuencial + ID Wave de referencia</small></div><button id="newInitiativeBtn" class="btn primary">+ Nueva iniciativa</button></div>
+          <div class="table-wrap"><table><thead><tr><th>ID FP</th><th>ID Wave</th><th>Iniciativa</th><th>País</th><th>Workstream</th><th>Responsable</th><th>Etapa</th><th>Weekly</th><th></th></tr></thead><tbody id="initiativesBody"></tbody></table></div>
+        </section>
+
+        <section id="page-planning" class="page"><div class="section-title"><div><h3>Planificación Financiera</h3><small>Forecast y objetivos mensuales versionados</small></div></div><div id="planningContent" class="table-wrap"></div></section>
+        <section id="page-captures" class="page"><div class="section-title"><div><h3>Captura Mensual</h3><small>EBITDA/VNF real con evidencias y validación financiera</small></div><button id="newCaptureBtn" class="btn primary">+ Nueva captura</button></div><div class="table-wrap"><table><thead><tr><th>Iniciativa</th><th>Periodo</th><th>EBITDA Real</th><th>VNF Real</th><th>Estado</th><th>Validado por</th><th></th></tr></thead><tbody id="capturesBody"></tbody></table></div></section>
+        <section id="page-tasks" class="page"><div class="section-title"><div><h3>Pendientes</h3><small>Seguimiento estilo Planner</small></div><button id="newTaskBtn" class="btn primary">+ Nuevo pendiente</button></div><div class="board"><div><h4>Por hacer</h4><div id="todoTasks"></div></div><div><h4>En curso</h4><div id="doingTasks"></div></div><div><h4>Completados</h4><div id="doneTasks"></div></div></div></section>
+        <section id="page-kpis" class="page"><div class="section-title"><h3>KPI</h3></div><div id="kpisContent" class="table-wrap"></div></section>
+        <section id="page-milestones" class="page"><div class="section-title"><h3>Hitos</h3></div><div id="milestonesContent" class="table-wrap"></div></section>
+        <section id="page-approvals" class="page"><div class="section-title"><h3>Aprobaciones</h3></div><div class="table-wrap"><table><thead><tr><th>Etapa</th><th>Iniciativa</th><th>Solicitud</th><th>Estado</th><th>Fecha</th><th></th></tr></thead><tbody id="approvalsBody"></tbody></table></div></section>
+        <section id="page-reports" class="page"><div class="section-title"><h3>Reportes</h3></div><div class="kpi-grid"><article class="card kpi"><small>EBITDA validado</small><strong id="reportEbitda">$0</strong></article><article class="card kpi"><small>VNF validado</small><strong id="reportVnf">$0</strong></article><article class="card kpi"><small>Capturas validadas</small><strong id="reportCaptures">0</strong></article></div></section>
+        <section id="page-users" class="page"><div class="section-title"><div><h3>Usuarios</h3><small>Correo + código HCM + rol</small></div><button id="newUserBtn" class="btn primary">+ Registrar usuario</button></div><div class="table-wrap"><table><thead><tr><th>HCM</th><th>Nombres</th><th>Correo</th><th>Rol</th><th>País</th><th>Estado</th></tr></thead><tbody id="usersBody"></tbody></table></div></section>
+        <section id="page-catalogs" class="page"><div class="section-title"><div><h3>Catálogos</h3><small>Listas maestras equivalentes a la hoja List/Wave</small></div></div><div id="catalogsGrid" class="catalog-grid"></div></section>
+      </div>
+    </main>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden"><div class="modal"><header><h3 id="modalTitle"></h3><button id="modalClose" class="icon-btn">×</button></header><div id="modalBody" class="modal-body"></div><footer id="modalFooter"></footer></div></div>
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
